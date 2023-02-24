@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 
-import TheWelcome from "@/components/TheWelcome.vue";
+import TheWelcome from "@/components/Bienvenida.vue";
 import Registro from "@/components/registro.vue";
 
 import {createRouter, createWebHistory} from "vue-router";
@@ -11,7 +11,7 @@ import './assets/main.css';
 import {auth} from "@/firebase";
 import Ofimatica from "@/components/ofimatica.vue";
 import Programacion from "@/components/programacion.vue";
-import Sos from "@/components/sos.vue";
+import Sos from "@/components/sistemas.vue";
 import Admin from "@/components/admin.vue";
 
 let autenticado = false;

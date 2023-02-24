@@ -27,7 +27,6 @@ function loginUsuario() {
         .then((userCredential) => {
             const user = userCredential.user;
             console.log(user)
-            window.location.href = "/";
         })
         .catch((error) => {
             const errorCode = error.code;
