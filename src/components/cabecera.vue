@@ -17,6 +17,12 @@ function cerrarSesion() {
     });
 }
 
+
+let loaded = ref(false)
+setTimeout(() => {
+    loaded.value = true;
+}, 1000);
+
 </script>
 
 <template>
@@ -33,7 +39,13 @@ function cerrarSesion() {
     </header>
 
     <main>
-        <router-view></router-view>
+        <div v-if="!loaded">
+            <div class="preload"></div>
+        </div>
+        <div v-else>
+            <Suspense><router-view></router-view></Suspense>
+        </div>
+
 
     </main>
 </template>
@@ -70,4 +82,21 @@ button:hover {
 
 
 }
+
+ .preload {
+     width: 60px;
+     height: 60px;
+     border: 8px solid #ffffff;
+     border-top: 8px solid hsla(160, 100%, 37%, 1);
+     border-radius: 50%;
+     animation: spin 0.7s ease-in-out infinite;
+     margin: 50px auto;
+     backdrop-filter: blur(100px);
+ }
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 </style>

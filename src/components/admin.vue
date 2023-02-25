@@ -4,6 +4,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/firebase";
 import { ref } from "vue";
 import { getStorage, ref as refStrg, uploadBytes, getDownloadURL } from "firebase/storage";
+import { collection, addDoc, getDocs } from "firebase/firestore";
+import { db } from "@/firebase";
 import Ofimatica from "@/components/ofimatica.vue";
 import Programacion from "@/components/programacion.vue";
 import Sos from "@/components/sistemas.vue";
@@ -29,6 +31,12 @@ function subirArchivo() {
             })
     });
 }
+
+
+const querySnapshot = await getDocs(collection(db, "cursos"));
+querySnapshot.forEach((doc) => {
+    console.log(doc.data());
+});
 
 </script>
 

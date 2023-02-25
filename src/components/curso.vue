@@ -2,6 +2,8 @@
 import {onAuthStateChanged} from "firebase/auth";
 import {auth} from "@/firebase.js";
 import {ref} from "vue";
+import detalleCurso from "@/components/detalleCurso.vue";
+import DetalleCurso from "@/components/detalleCurso.vue";
 
 let loged = ref("")
 
@@ -9,9 +11,16 @@ onAuthStateChanged(auth, (user) => {
     loged.value = !!user;
 });
 
+let nombreCurso = ref("");
 function showCourse() {
-    console.log("Curso");
+    document.querySelectorAll(".curso-content").forEach((curso) => {
+        curso.addEventListener("click", () => {
+            nombreCurso.value = curso.innerText.split(new RegExp("[\n ]"))[0];
+            console.log(nombreCurso.value);
+        });
+    });
 }
+
 
 </script>
 
@@ -29,12 +38,19 @@ function showCourse() {
                 <slot name="curso-descripcion"></slot>
             </p>
             <p class="curso-duracion">
-                <b>Duraci&oacute;n:</b>
-                <slot name="curso-duracion"></slot>
+                Duraci&oacute;n:
+                <b>
+                    <slot name="curso-duracion"></slot>
+                </b>
             </p>
             <button v-if="loged">Ap&uacute;ntate</button>
         </section>
     </fieldset>
+    <div v-if="nombreCurso.value === ''">
+        <div class="detalleCurso">
+            <DetalleCurso v-bind:nombreCurso="nombreCurso"></DetalleCurso>
+        </div>
+    </div>
 </template>
 
 

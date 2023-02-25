@@ -1,73 +1,49 @@
 <script setup>
 import Cursos from "@/components/cursos.vue";
 import Curso from "@/components/curso.vue";
+import {collection, getDocs} from "firebase/firestore";
+import {db} from "@/firebase";
+import {ref} from "vue";
+let loaded = ref(false)
+
+let cursos;
+const querySnapshot = await getDocs(collection(db, "cursos"));
+querySnapshot.forEach((doc) => {
+    cursos = doc.data()["sistemas"];
+    loaded.value = true;
+});
+console.log(cursos);
+
 </script>
 
 <template>
 
-    <cursos>
-        <template #titulo>
-            Cursos de Sistemas Operativos
-        </template>
+    <div v-if="!loaded">
+        <div class="preload"></div>
+    </div>
+    <div v-else>
+        <cursos>
+            <template #titulo>
+                Cursos de ofim&aacute;tica
+            </template>
 
-        <template #curso1>
-            <curso>
-                <template #curso-img>
-                    <img src="../media/windows-10.png" alt="curso-icon">
-                </template>
-                <template #curso-name>
-                    Windows 10
-                </template>
-                <template #curso-descripcion>
-                    En este curso apreder&aacute;s a usar Windows 10.
-                </template>
-                <template #curso-duracion>
-                    25 horas.
-                </template>
-            </curso>
-        </template>
-
-        <template #curso2>
-            <curso>
-                <template #curso-img>
-                    <img src="../media/ubuntu.png" alt="curso-icon">
-                </template>
-                <template #curso-name>
-                    Ubuntu
-                </template>
-                <template #curso-descripcion>
-                    En este curso apreder&aacute;s a usar Ubuntu.
-                </template>
-                <template #curso-duracion>
-                    15 horas.
-                </template>
-            </curso>
-        </template>
-
-        <template #curso3>
-            <curso>
-                <template #curso-img>
-                    <img src="../media/mac.png" alt="curso-icon">
-                </template>
-                <template #curso-name>
-                    Mac Os
-                </template>
-                <template #curso-descripcion>
-                    En este curso apreder&aacute;s a usar Mac Os.
-                </template>
-                <template #curso-duracion>
-                    18 horas.
-                </template>
-            </curso>
-        </template>
-
-    </cursos>
-
+            <template v-for="curso in cursos">
+                <curso>
+                    <template #curso-img>
+                        <img v-bind:src="'/src/media/'+curso.imagen" alt="curso-icon">
+                    </template>
+                    <template #curso-name>
+                        {{ curso.nombre }}
+                    </template>
+                    <template #curso-descripcion>
+                        {{ curso.descripcion }}
+                    </template>
+                    <template #curso-duracion>
+                        {{ curso.duracion }}
+                    </template>
+                </curso>
+            </template>
+        </cursos>
+    </div>
 
 </template>
-
-<style>
-
-
-
-</style>
