@@ -42,7 +42,6 @@ async function nuevoCurso() {
         imagen: imagen
     });
     console.log("Document written with ID: ", docRef.id);
-
 }
 
 // Actualiza un curso en la base de datos
