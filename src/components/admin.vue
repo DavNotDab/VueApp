@@ -1,38 +1,27 @@
 
+<!-- Este componente es el que se muestra cuando el usuario entra en la zona de administracion -->
+
 <script setup>
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/firebase";
 import { ref } from "vue";
-import { getStorage, ref as refStrg, uploadBytes, getDownloadURL } from "firebase/storage";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebase";
 import Ofimatica from "@/components/ofimatica.vue";
 import Programacion from "@/components/programacion.vue";
 import Sos from "@/components/sistemas.vue";
+import NuevoCurso from "@/components/nuevoCurso.vue";
 
 let nombreUsuario = ref("");
 
+// Detecta cada vez que el usuario inicia o cierra sesión
 onAuthStateChanged(auth, (user) => {
     if (user) {
         nombreUsuario.value = user.email;
     }
 });
 
-let file = ref("");
-
-function subirArchivo() {
-    const storage = getStorage();
-    const storageRef = refStrg(storage, file.value.files[0].name);
-    uploadBytes(storageRef, file.value.files[0]).then(() => {
-        console.log('Uploaded a blob or file!');
-        getDownloadURL(storageRef)
-            .then((url) => {
-                console.log(url);
-            })
-    });
-}
-
-
+// Obtiene los cursos de la base de datos
 const querySnapshot = await getDocs(collection(db, "cursos"));
 querySnapshot.forEach((doc) => {
     console.log(doc.data());
@@ -44,9 +33,9 @@ querySnapshot.forEach((doc) => {
     <div class="header">
         <h1>Area privada</h1>
         <h3>Bienvenido {{nombreUsuario}}</h3>
-        <p><input type="file" name="file" id="file" ref="file" @change="subirArchivo"></p>
     </div>
 
+    <!-- Muestra los cursos de la base de datos -->
     <div class="main">
         <div class="cursos">
 
@@ -61,5 +50,9 @@ querySnapshot.forEach((doc) => {
                 <Sos></Sos>
             </section>
         </div>
+        <br><br>
+        <!-- Carga el formulario para añadir un nuevo curso -->
+        <NuevoCurso></NuevoCurso>
+
     </div>
 </template>

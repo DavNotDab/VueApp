@@ -1,32 +1,51 @@
+
+<!--
+    Este componente se encarga de mostrar los cursos que se encuentran en la base de datos
+    de firebase.
+-->
+
 <script setup>
 import {onAuthStateChanged} from "firebase/auth";
 import {auth} from "@/firebase.js";
 import {ref} from "vue";
-import detalleCurso from "@/components/detalleCurso.vue";
-import DetalleCurso from "@/components/detalleCurso.vue";
+import { getStorage, ref as StrgRef, getDownloadURL } from "firebase/storage";
+
+const storage = getStorage();
 
 let loged = ref("")
 
+// Detecta cada vez que el usuario inicia o cierra sesión
 onAuthStateChanged(auth, (user) => {
     loged.value = !!user;
 });
 
 let nombreCurso = ref("");
+// Funcion que muestra la vista detallada (pdf) del curso seleccionado
 function showCourse() {
     document.querySelectorAll(".curso-content").forEach((curso) => {
         curso.addEventListener("click", () => {
-            nombreCurso.value = curso.innerText.split(new RegExp("[\n ]"))[0];
+            nombreCurso.value = curso.querySelector(".curso-name").textContent;
             console.log(nombreCurso.value);
+
+            getDownloadURL(StrgRef(storage, nombreCurso.value+'.jpg'))
+                .then((url) => {
+                    // Insertamos la url del pdf dentro de nuestro html
+                    const img = document.getElementById('myimg');
+                    img.setAttribute('src', url);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    });
         });
     });
 }
 
-
 </script>
 
 <template>
+    <!-- Al pulsar el fieldset se activa o desactiva la vista detallada-->
     <fieldset @click="showCourse()">
-        <section class="curso-content">
+        <section class="curso-content" v-if="nombreCurso === ''">
             <slot name="curso"></slot>
             <div class="curso-img">
                 <slot name="curso-img"></slot>
@@ -45,14 +64,12 @@ function showCourse() {
             </p>
             <button v-if="loged">Ap&uacute;ntate</button>
         </section>
+        <section v-else>
+            <div @click="nombreCurso = ''">CERRAR</div>
+            <embed id="myimg" src="" type="image/jpg" />
+        </section>
     </fieldset>
-    <div v-if="nombreCurso.value === ''">
-        <div class="detalleCurso">
-            <DetalleCurso v-bind:nombreCurso="nombreCurso"></DetalleCurso>
-        </div>
-    </div>
 </template>
-
 
 <style scoped>
 
@@ -68,7 +85,9 @@ function showCourse() {
     margin: 10px 0;
 }
 
-
+embed {
+    width: 100%;
+}
 
 b {
     font-weight: bold;

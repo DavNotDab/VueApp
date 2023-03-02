@@ -1,3 +1,6 @@
+
+<!-- Componente de la cabecera -->
+
 <script setup>
 import {ref} from "vue";
 import {onAuthStateChanged, signOut} from "firebase/auth";
@@ -5,10 +8,12 @@ import {auth} from "@/firebase";
 
 let loged = ref("");
 
+// Funcion que comprueba si el usuario esta logeado o no
 onAuthStateChanged(auth, (user) => {
     loged.value = !!user;
 });
 
+// Funcion para cerrar sesión
 function cerrarSesion() {
     signOut(auth).then(() => {
         console.log("Sesion cerrada");
@@ -17,7 +22,7 @@ function cerrarSesion() {
     });
 }
 
-
+// Variable que controla si se ha cargado la pagina
 let loaded = ref(false)
 setTimeout(() => {
     loaded.value = true;
@@ -39,6 +44,7 @@ setTimeout(() => {
     </header>
 
     <main>
+        <!-- Muestra el preload mientras se carga la pagina -->
         <div v-if="!loaded">
             <div class="preload"></div>
         </div>
@@ -62,6 +68,7 @@ nav {
     padding: 0 50px;
     gap: 50px;
     align-items: center;
+    justify-content: center;
 }
 
 button {

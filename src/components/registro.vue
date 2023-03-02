@@ -1,3 +1,6 @@
+
+<!-- Componente que controla el registro y login de usuarios -->
+
 <script setup>
 import { ref } from 'vue';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
@@ -8,12 +11,13 @@ import { auth } from "@/firebase";
 let usuario = ref(""), password = ref("");
 const provider = new GoogleAuthProvider();
 
-
+// Funcion para registrar un usuario
 function altaUsuario() {
     createUserWithEmailAndPassword(auth, usuario.value, password.value)
         .then((userCredential) => {
             const user = userCredential.user;
             console.log(user)
+            window.location.href = "/";
         })
         .catch((error) => {
             const errorCode = error.code;
@@ -22,11 +26,13 @@ function altaUsuario() {
         });
 }
 
+// Funcion para logear un usuario
 function loginUsuario() {
     signInWithEmailAndPassword(auth, usuario.value, password.value)
         .then((userCredential) => {
             const user = userCredential.user;
             console.log(user)
+            window.location.href = "/";
         })
         .catch((error) => {
             const errorCode = error.code;
@@ -35,6 +41,7 @@ function loginUsuario() {
         });
 }
 
+// Funcion para logear un usuario con Google
 function loginGoogle() {
     signInWithPopup(auth, provider)
         .then((result) => {
@@ -59,9 +66,10 @@ function loginGoogle() {
 
 </script>
 
+<!-- Formulario de registro/login -->
 <template>
   <div>
-    <h1>Registro</h1>
+    <h1>Registro / Login</h1>
       <label for="usuario">Usuario: </label>
       <input type="text" v-model="usuario" placeholder="usuario" id="usuario" name="usuario"> <br>
       <label for="password">Password: </label>
@@ -74,3 +82,16 @@ function loginGoogle() {
 </template>
 
 
+<style scoped>
+div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+button {
+    margin: 10px;
+}
+
+</style>

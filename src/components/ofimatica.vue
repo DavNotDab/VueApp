@@ -1,3 +1,6 @@
+
+<!-- Componente que recoge los cursos de la categoria ofimatica -->
+
 <script setup>
 import Cursos from "@/components/cursos.vue";
 import Curso from "@/components/curso.vue";
@@ -6,6 +9,7 @@ import {db} from "@/firebase";
 import {ref} from "vue";
 let loaded = ref(false)
 
+// Obtiene los cursos de la base de datos de la categoria ofimatica
 let cursos;
 const querySnapshot = await getDocs(collection(db, "cursos"));
 querySnapshot.forEach((doc) => {
@@ -18,6 +22,7 @@ console.log(cursos);
 
 <template>
 
+    <!-- Muestra un preloader mientras se cargan los datos de la base de datos -->
     <div v-if="!loaded">
         <div class="preload"></div>
     </div>
@@ -27,6 +32,7 @@ console.log(cursos);
                 Cursos de ofim&aacute;tica
             </template>
 
+            <!-- Muestra los cursos de la categoria ofimatica -->
             <template v-for="curso in cursos">
                 <curso>
                     <template #curso-img>

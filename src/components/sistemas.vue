@@ -1,3 +1,6 @@
+
+<!-- Componente que recoge los cursos de la categoria sistemas operativos -->
+
 <script setup>
 import Cursos from "@/components/cursos.vue";
 import Curso from "@/components/curso.vue";
@@ -18,6 +21,7 @@ console.log(cursos);
 
 <template>
 
+    <!-- Muestra un preloader mientras se cargan los datos de la base de datos -->
     <div v-if="!loaded">
         <div class="preload"></div>
     </div>
@@ -27,6 +31,7 @@ console.log(cursos);
                 Cursos de ofim&aacute;tica
             </template>
 
+            <!-- Muestra los cursos de la categoria sistemas operativos -->
             <template v-for="curso in cursos">
                 <curso>
                     <template #curso-img>

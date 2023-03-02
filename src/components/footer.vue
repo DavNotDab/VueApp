@@ -1,6 +1,5 @@
-<script setup>
 
-</script>
+<!-- Componente para el footer de las paginas -->
 
 <template>
 

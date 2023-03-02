@@ -1,3 +1,6 @@
+
+<!-- Componente de la pagina de bienvenida -->
+
 <script setup>
 import WelcomeItem from './WelcomeItem.vue'
 import IconSupport from "@/components/icons/IconSupport.vue";

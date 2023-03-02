@@ -1,3 +1,6 @@
+
+// Archivo que contiene la configuración de Vue y de Firebase, así como las rutas de la aplicación
+
 import { createApp } from 'vue';
 import App from './App.vue';
 

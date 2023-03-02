@@ -1,3 +1,6 @@
+
+<!--Componente que incluye todos los cursos de una misma categoria-->
+
 <script setup>
 import Curso from "@/components/curso.vue";
 </script>
